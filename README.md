@@ -1,6 +1,6 @@
 # playlists
 
-A small library for reading and writing M3U/M3U8 audio playlists.
+A small library for reading and writing M3U/M3U8 and PLS audio playlists.
 
 Every media player writes M3U slightly differently: some skip the
 `#EXTM3U` header, some skip `#EXTINF` duration/title metadata entirely,
@@ -66,11 +66,20 @@ Reading from a pipe on the command line, with your own thin script:
 cat my_mix.m3u8 | python -c "import playlists, sys; print(len(playlists.load(sys.stdin)))"
 ```
 
+PLS playlists use the same `Track` type, under `playlists.pls`:
+
+```python
+import playlists.pls
+
+tracks = playlists.pls.load("my_mix.pls")
+playlist_text = playlists.pls.dumps(tracks)
+```
+
 ## Status
 
-Early. M3U/M3U8 read and write works. See the roadmap in commit history
-for what's planned next (PLS support, relative-path resolution, malformed
-input handling).
+Early. M3U/M3U8 and PLS read and write both work. See the roadmap in
+commit history for what's planned next (unit tests, relative-path
+resolution, malformed input handling).
 
 ## License
 

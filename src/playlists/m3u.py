@@ -10,13 +10,10 @@ metadata rather than something to validate against.
 
 from __future__ import annotations
 
-import sys
 from dataclasses import dataclass
-from pathlib import Path
-from typing import IO, Iterable, Optional, Union
+from typing import Iterable, Optional
 
-PathLike = Union[str, Path]
-Source = Union[PathLike, IO[str], None]
+from ._io import Source, read_source
 
 
 @dataclass
@@ -69,14 +66,7 @@ def load(source: Source = None) -> list[Track]:
     - Anything else is assumed to already be an open text stream (a
       file object, io.StringIO, sys.stdin, ...) and is read directly.
     """
-    if source is None or source == "-":
-        return parse(sys.stdin.read())
-
-    if isinstance(source, (str, Path)):
-        with open(source, "r", encoding="utf-8") as f:
-            return parse(f.read())
-
-    return parse(source.read())
+    return parse(read_source(source))
 
 
 def dumps(tracks: Iterable[Track]) -> str:
